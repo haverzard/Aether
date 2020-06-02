@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import {CSSTransition} from 'react-transition-group';
-import logo from './money.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react'
+import {CSSTransition} from 'react-transition-group'
 import UserChoices from '../Choices/UserChoices.js'
+import logo from './money.svg'
+import './App.css'
 
 export default function Home() {
     const [enabled, setEnabled] = useState(false)

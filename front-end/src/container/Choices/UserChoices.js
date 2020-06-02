@@ -1,5 +1,5 @@
-import React from 'react';
-import './Choice.css';
+import React from 'react'
+import './Choice.css'
 
 export default function Home() {
     return (

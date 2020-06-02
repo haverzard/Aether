@@ -68,4 +68,22 @@ contract Project {
         currentBalance -= histories[msg.sender];
         histories[msg.sender] = 0;
     }
+    
+    function get() public view returns (
+        address payable _creator,
+        string memory _title,
+        string memory _description,
+        uint _deadline,
+        State _state,
+        uint _currentBalance,
+        uint _goal
+    ) {
+        _creator = creator;
+        _title = title;
+        _description = description;
+        _deadline = deadline;
+        _state = state;
+        _currentBalance = currentBalance;
+        _goal = goal;
+    }
 }
