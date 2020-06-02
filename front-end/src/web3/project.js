@@ -1,56 +1,7 @@
-import Web3 from 'web3'
+import web3 from './web3.js'
+import {campaignContract} from "./campaign.js"
 
-let address = "0xC558968b0B82a5aE76012De1e8827F43769E5AB1"
-let campaignAbi = [
-	{
-		"inputs": [
-			{
-				"internalType": "address payable",
-				"name": "creator",
-				"type": "address"
-			},
-			{
-				"internalType": "string",
-				"name": "title",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "description",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "deadline",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "goal",
-				"type": "uint256"
-			}
-		],
-		"name": "createProject",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getProjects",
-		"outputs": [
-			{
-				"internalType": "contract Project[]",
-				"name": "",
-				"type": "address[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
-]
-
-let projectAbi = [
+export const projectAbi = [
 	{
 		"inputs": [
 			{
@@ -258,10 +209,20 @@ let projectAbi = [
 	}
 ]
 
-let campaignContract = new Web3.eth.contract(campaignAbi, address)
-
-window.web3 = new Web3(web3.currentProvider)
 
 export async function getProjects() {
-    return await campaignContract.methods.getProjects().call()    
+    let output = []
+    (await campaignContract.methods.getProjects().call()).forEach(async (projectAddress) => {
+        let projectContract = new web3.eth.Contract(projectAbi, projectAddress)
+        let project = await projectContract.methods.get().call()
+        project.contract = projectContract
+        output.push(project)
+    })
+    return output
+}
+
+export async function createProject(title, description, deadline, goal) {    
+    await campaignContract.methods.createProject(title, description, deadline, web3.utils.toWei(goal, 'ether')).send({
+      from: (await web3.eth.getAccounts())[0],
+    })
 }
