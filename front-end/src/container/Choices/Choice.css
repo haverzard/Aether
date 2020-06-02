@@ -1,0 +1,31 @@
+.Choice-flex {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding-top: 100px;
+}
+
+.Choice-box {
+    min-width: 30%;
+    height: 100px;
+    line-height: 100px;
+    font-size: 20px;
+    background-color: #ffd769;
+    color: #000;
+    border-radius: 20px;
+    margin: 50px;
+}
+
+.Choice-box:hover {
+    background-color: #eb9534;
+    color: #fff;
+}
+
+@media (max-width: 900px) {
+    .Choice-box {
+        width: 100%;
+        font-size: 20px;
+        margin: 15px;
+    }
+}
