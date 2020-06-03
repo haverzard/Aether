@@ -222,7 +222,22 @@ export async function getProjects() {
 }
 
 export async function createProject(title, description, deadline, goal) {    
-    await campaignContract.methods.createProject(title, description, deadline, web3.utils.toWei(goal, 'ether')).send({
+    return await campaignContract.methods.createProject(title, description, deadline, web3.utils.toWei(goal, 'ether')).send({
       from: (await web3.eth.getAccounts())[0],
-    })
+	})
+}
+
+export async function fundProject(address, amount) {    
+	let projectContract = new web3.eth.Contract(projectAbi, address)
+    return await projectContract.methods.fund().send({
+	  from: (await web3.eth.getAccounts())[0],
+	  value: web3.utils.toWei(amount, 'ether')
+	})
+}
+
+export async function refundProject(address) {
+	let projectContract = new web3.eth.Contract(projectAbi, address)
+    return await projectContract.methods.refund().send({
+      from: (await web3.eth.getAccounts())[0]
+	})
 }

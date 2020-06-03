@@ -18,6 +18,7 @@ export default class Home extends React.Component {
                 this.state.description,
                 this.state.deadline,
                 this.state.goal)
+            alert("We received your transaction")
         }
     }
     componentDidMount() {        

@@ -1,14 +1,101 @@
+#Page-loading {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#Page-title {
+    width: 80%;
+    border-bottom: 1px solid #000;
+    margin-top: 100px;
+    margin-bottom: 30px;
+    text-align: left;
+    font-size: 50px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
 #Projects-wrapper {
     height: 100vh;
     width: 100%;
+    font-size: 25px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
     overflow-y: scroll;
 }
+
 .Project-container {
-    height: 100vh;
-    width: 100%;
+    width: 80%;
+    font-size: 20px;
+    text-align: left;
+    border: 3px double #000;
+    margin-bottom: 100px;
+}
+
+.Project-wrapper {
+    margin: 20px;
+}
+
+.Project-main {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.Project-title {
+    margin-right: 10px;
+    font-weight: 800;
+}
+
+.Project-goal {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.Project-identifier {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: aliceblue;
+    margin-right: 20px;
+}
+
+.Project-desc {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: #777;
+    margin-bottom: 20px;
+}
+
+.Project-deadline {
+    margin-bottom: 10px;
+}
+
+@media (max-width: 900px) {
+    .Project-title {
+        margin-right: 5px;
+    }
+
+    .Project-identifier {
+        margin-right: 10px;
+    }
+
+    .Project-title, .Project-identifier, .Project-goal {
+        font-size: 15px;
+    }
+
+    .Project-main {
+        margin-bottom: 10px;
+    }
+
+    .Project-desc {
+        margin-bottom: 15px;
+    }
+
+    .Project-desc, .Project-deadline {
+        font-size: 12px;
+    }
+
+    input, .Project-wrapper button {
+        font-size: 15px;
+    }
 }
