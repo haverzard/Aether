@@ -1,6 +1,34 @@
 # Crowdfunding Platform
 Funding for a project is a common problem, so why don't we just create our own?
 
+## Prerequisites
+- Node.js: https://nodejs.org/en/
+- MetaMask: https://metamask.io/
+- Serve: `npm install -g serve`
+
+## Usage
+### Deploy your contracts
+- Open Remix (https://remix.ethereum.org/) and copy-paste files in the contracts folder
+- Choose Solidity enviroment and open compiler menu
+- Choose compiler `0.6.6+commit.6c089d02`
+- Open deploy menu, pick injected web3 enviroment, and choose your account
+- Click deploy and accept the transaction
+- Your contracts has been deployed and remember the address
+- Also remember the abi in compile menu for each contract
+
+## Setup the front-end
+### Using your own contracts (with same format obviously)
+Please skip this step if you don't want to deploy your own contracts
+- Open `front-end/src/web3/campaign.js` file and change the address with your deployed contract's address and also change the campaign contract's abi with your own
+- Open `front-end/src/web3/project.js` file and change the project contract's abi with your own
+- Done
+
+### Run front-end
+- Move to front-end folder
+- Run `npm install`
+- Run `npm run build`
+- Run `serve -s build` as administrator
+
 ## Front-end
 
 ### Available Scripts

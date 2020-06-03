@@ -34,6 +34,44 @@ export const projectAbi = [
 		"type": "constructor"
 	},
 	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "message",
+				"type": "string"
+			}
+		],
+		"name": "ClientRequest",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "requestor",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "action",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "Transaction",
+		"type": "event"
+	},
+	{
 		"inputs": [],
 		"name": "creator",
 		"outputs": [
@@ -208,7 +246,6 @@ export const projectAbi = [
 		"type": "function"
 	}
 ]
-
 
 export async function getProjects() {
     let output = [];
