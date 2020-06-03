@@ -13,7 +13,7 @@ jobs:
   build:
 
     env:
-      working-directory: ./fornax_api
+      working-directory: ./front-end
 
     runs-on: ubuntu-latest
 
