@@ -6,7 +6,9 @@ import './Project.sol';
 contract Campaign {
     using SafeMath for uint; //Because of lookup issue
     Project[] private projects;
-    
+
+    event CreateProject(address indexed creator, string title);
+
     //Create project + add to contract
     function createProject(
         address payable creator,
@@ -15,9 +17,10 @@ contract Campaign {
         uint deadline,
         uint goal
     ) public {
-        projects.push(new Project(creator, title, description, deadline.mul(1 days), goal));
+        projects.push(new Project(creator, title, description, now.add(deadline.mul(1 days)), goal));
+        emit CreateProject(creator, title);
     }
-    
+
     //Get projects stored in contract
     function getProjects() public view returns(Project[] memory) {
         return projects;

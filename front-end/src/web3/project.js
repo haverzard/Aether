@@ -211,13 +211,13 @@ export const projectAbi = [
 
 
 export async function getProjects() {
-    let output = []
-    (await campaignContract.methods.getProjects().call()).forEach(async (projectAddress) => {
-        let projectContract = new web3.eth.Contract(projectAbi, projectAddress)
+    let output = [];
+    for (let address of (await campaignContract.methods.getProjects().call())) {
+        let projectContract = new web3.eth.Contract(projectAbi, address)
         let project = await projectContract.methods.get().call()
         project.contract = projectContract
         output.push(project)
-    })
+    }
     return output
 }
 
