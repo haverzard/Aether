@@ -1,6 +1,8 @@
 # Crowdfunding Platform
 ![Node.js CI](https://github.com/haverzard/CrowdFunding_Ethereum/workflows/Node.js%20CI/badge.svg)
+
 ![View](view.gif)
+
 Funding for a project is a common problem, so why don't we just create our own?
 
 ## Prerequisites
