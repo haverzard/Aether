@@ -1,9 +1,11 @@
 # Crowdfunding Platform
+![Node.js CI](https://github.com/haverzard/CrowdFunding_Ethereum/workflows/Node.js%20CI/badge.svg)
+![View](view.gif)
 Funding for a project is a common problem, so why don't we just create our own?
 
 ## Prerequisites
-- Node.js: https://nodejs.org/en/
 - MetaMask: https://metamask.io/
+- Node.js: https://nodejs.org/en/
 - Serve: `npm install -g serve`
 
 ## Usage
@@ -27,7 +29,7 @@ Please skip this step if you don't want to deploy your own contracts
 - Move to front-end folder
 - Run `npm install`
 - Run `npm run build`
-- Run `serve -s build` as administrator
+- Run `serve -s build`
 
 ## Front-end
 
