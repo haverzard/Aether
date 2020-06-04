@@ -7,6 +7,9 @@ Funding for a project is a common problem, so why don't we just create our own?
 
 ## Prerequisites
 - MetaMask: https://metamask.io/
+### Docker
+- Docker
+### Non-Docker
 - Node.js: https://nodejs.org/en/
 - Serve: `npm install -g serve`
 
@@ -27,7 +30,12 @@ Please skip this step if you don't want to deploy your own contracts
 - Open `front-end/src/web3/project.js` file and change the project contract's abi with your own
 - Done
 
-#### Run front-end
+#### Run front-end (Docker)
+- Run `docker build -t <name>:<tag> .`
+- Run `docker run -p 5000:5000 <name>:<tag>` (same name and tag as above)
+- You can access the web at http://localhost:5000
+
+#### Run front-end (Non-Docker)
 - Move to front-end folder
 - Run `npm install`
 - Run `npm run build`
