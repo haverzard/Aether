@@ -1,6 +1,6 @@
 import web3 from './web3.js'
 
-const address = "0xb815Ff9C66F154E182f748004E90974E0f4460e4" // Change this if you want to use your own contracts
+const address = "0x69805Bc183f16Eb78B810e4E6499E6B4783C615a" // Change this if you want to use your own contracts
 const campaignAbi = [
 	{
 		"anonymous": false,

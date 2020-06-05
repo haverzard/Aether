@@ -250,8 +250,9 @@ export const projectAbi = [
 export async function getProjects() {
     let output = [];
     for (let address of (await campaignContract.methods.getProjects().call())) {
-        let projectContract = new web3.eth.Contract(projectAbi, address)
-        let project = await projectContract.methods.get().call()
+		let projectContract = new web3.eth.Contract(projectAbi, address)
+		let project = await projectContract.methods.get().call()
+		console.log(project)
         project.contract = projectContract
         output.push(project)
     }

@@ -48,13 +48,13 @@ contract Project {
         currentBalance = 0;
     }
 
-    // Check status (only when fund comes in)
-    function updateStatus() private {
-        if (currentBalance >= goal) {
+    // Check status (client must use this)
+    function updateStatus() private StateOn(State.OnGoing) {
+        if (deadline < now) { // If deadline reached, don't make the project succeeds
+            state = State.Expired;
+        } else if (currentBalance >= goal) {
             state = State.Fulfilled;
             takeFund();
-        } else if (deadline < now) {
-            state = State.Expired;
         }
     }
 
@@ -68,9 +68,7 @@ contract Project {
 
     // Ability to fund when on going
     function fund() public StateOn(State.OnGoing) payable {
-        updateStatus(); // Update the status first to check expired or not
-        require(state == State.OnGoing, "Project has been expired");
-        histories[msg.sender].add(msg.value);
+        histories[msg.sender] = histories[msg.sender].add(msg.value);
         emit Transaction(msg.sender, "Funding the project", msg.value);
         currentBalance += msg.value;
         updateStatus();
