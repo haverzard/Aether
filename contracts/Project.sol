@@ -1,11 +1,6 @@
 pragma solidity >=0.4.22 <0.7.0;
 
-import "https://github.com/OpenZeppelin/openzeppelin-solidity/contracts/math/SafeMath.sol";
-
 contract Project {
-    using SafeMath for uint;
-    using SafeMath for uint256; // Because of lookup issue and floating point
-
     // State
     enum State {
         OnGoing,
@@ -68,7 +63,7 @@ contract Project {
 
     // Ability to fund when on going
     function fund() public StateOn(State.OnGoing) payable {
-        histories[msg.sender] = histories[msg.sender].add(msg.value);
+        histories[msg.sender] = histories[msg.sender] + msg.value;
         emit Transaction(msg.sender, "Funding the project", msg.value);
         currentBalance += msg.value;
         updateStatus();
