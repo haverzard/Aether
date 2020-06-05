@@ -174,6 +174,25 @@ export const projectAbi = [
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			}
+		],
+		"name": "getHistory",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "payed",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "goal",
 		"outputs": [
@@ -252,8 +271,8 @@ export async function getProjects() {
     for (let address of (await campaignContract.methods.getProjects().call())) {
 		let projectContract = new web3.eth.Contract(projectAbi, address)
 		let project = await projectContract.methods.get().call()
-		console.log(project)
-        project.contract = projectContract
+		project.contract = projectContract
+		project.history = await projectContract.methods.getHistory((await web3.eth.getAccounts())[0]).call()
         output.push(project)
     }
     return output

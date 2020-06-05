@@ -101,4 +101,10 @@ contract Project {
         _currentBalance = currentBalance;
         _goal = goal;
     }
+
+    function getHistory(address user) public view returns (
+        uint payed
+    ) {
+        payed = histories[user];
+    }
 }

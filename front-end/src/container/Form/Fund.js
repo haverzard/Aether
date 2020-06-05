@@ -44,6 +44,7 @@ export default class Home extends React.Component {
                         {project._state == 2 && <div className="Project-identifier" style={{backgroundColor: '#0fd126'}}>Done</div>}
                         <div className="Project-title">{project._title}</div>
                         <div className="Project-goal">[GOAL — ETH {project._goal/(10**18)}]</div>
+                        <div className="Project-goal">[You have fund {project.history/(10**18)} ETH]</div>
                     </div>
                     <div className="Project-desc">{project._description}</div>
                     <div className="Project-deadline">Project will be ongoing until {(new Date(project._deadline * 1000)).toUTCString()}</div>
