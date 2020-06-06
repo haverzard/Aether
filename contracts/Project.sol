@@ -1,11 +1,19 @@
 pragma solidity >=0.4.22 <0.7.0;
+pragma experimental ABIEncoderV2; // We need this to use arrays to create package name
 
-contract Project {
+import './PackageInterface.sol';
+
+contract Project is PackageInterface {
     // State
     enum State {
         OnGoing,
         Expired,
         Fulfilled
+    }
+    // History data
+    struct History {
+        uint time;
+        uint fund;
     }
 
     address payable public creator;
@@ -15,7 +23,9 @@ contract Project {
     uint public goal;
     uint public deadline;
     State public state = State.OnGoing;
-    mapping (address => uint) public histories;
+    mapping (address => History[]) private histories;
+    mapping (address => uint) private accumulator;
+    Package[] public packages;
 
     // Events
     event Transaction(address indexed requestor, string action, uint amount);
@@ -23,7 +33,12 @@ contract Project {
 
     // Function template
     modifier StateOn(State _state) {
-        require(state == _state, "Method Not Available");
+        require(state == _state, "Method Not Available on This Project State");
+        _;
+    }
+
+    modifier CreatorOnly() {
+        require(msg.sender == creator, "Only the creator can do that");
         _;
     }
 
@@ -33,7 +48,8 @@ contract Project {
         string memory _title,
         string memory _description,
         uint _deadline,
-        uint _goal
+        uint _goal,
+        Package[] memory _packages
     ) public {
         creator = _creator;
         title = _title;
@@ -41,6 +57,9 @@ contract Project {
         goal = _goal;
         deadline = _deadline;
         currentBalance = 0;
+        for (uint i = 0; i < _packages.length; i++) {
+            packages.push(_packages[i]);
+        }
     }
 
     // Check status (client must use this)
@@ -54,8 +73,7 @@ contract Project {
     }
 
     // Just in case transfer errors
-    function takeFund() public StateOn(State.Fulfilled){
-        require(msg.sender == creator, "Only the creator can do that");
+    function takeFund() public StateOn(State.Fulfilled) CreatorOnly() {
         creator.transfer(currentBalance);
         emit Transaction(creator, "Taking the funds", currentBalance);
         currentBalance = 0;
@@ -63,7 +81,8 @@ contract Project {
 
     // Ability to fund when on going
     function fund() public StateOn(State.OnGoing) payable {
-        histories[msg.sender] = histories[msg.sender] + msg.value;
+        accumulator[msg.sender] = accumulator[msg.sender] + msg.value;
+        histories[msg.sender].push(History(now, msg.value));
         emit Transaction(msg.sender, "Funding the project", msg.value);
         currentBalance += msg.value;
         updateStatus();
@@ -71,11 +90,12 @@ contract Project {
 
     // Ability to refund after expired
     function refund() public StateOn(State.Expired) payable {
-        require(histories[msg.sender] > 0, "Refund is not available");
-        msg.sender.transfer(histories[msg.sender]);
-        emit Transaction(msg.sender, "Refunding the project", histories[msg.sender]);
-        currentBalance -= histories[msg.sender];
-        histories[msg.sender] = 0;
+        require(accumulator[msg.sender] > 0, "Refund is not available");
+        msg.sender.transfer(accumulator[msg.sender]);
+        emit Transaction(msg.sender, "Refunding the project", accumulator[msg.sender]);
+        currentBalance -= accumulator[msg.sender];
+        delete accumulator[msg.sender];
+        delete histories[msg.sender];
     }
 
     // Return all the datas
@@ -86,7 +106,8 @@ contract Project {
         uint _deadline,
         State _state,
         uint _currentBalance,
-        uint _goal
+        uint _goal,
+        Package[] memory _packages
     ) {
         _creator = creator;
         _title = title;
@@ -95,11 +116,17 @@ contract Project {
         _state = state;
         _currentBalance = currentBalance;
         _goal = goal;
+        _packages = packages;
     }
 
-    function getHistory(address user) public view returns (
-        uint payed
-    ) {
-        payed = histories[user];
+    // Get a user history
+    function getHistory(address user) public view returns (uint[] memory, uint[] memory) {
+        uint[] memory times = new uint[](histories[user].length);
+        uint[] memory funds = new uint[](histories[user].length);
+        for (uint i = 0; i < histories[user].length; i++) {
+            times[i] = histories[user][i].time;
+            funds[i] = histories[user][i].fund;
+        }
+        return (times, funds);
     }
 }

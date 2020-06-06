@@ -23,9 +23,14 @@
 }
 
 @media (max-width: 900px) {
+    .Choice-flex {    
+        padding-top: 20px;
+    }
     .Choice-box {
-        width: 100%;
+        width: 100%;;
+        height: 80px;
+        line-height: 80px;
         font-size: 20px;
-        margin: 15px;
+        margin: 15px 0 15px 0;
     }
 }

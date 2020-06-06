@@ -28,6 +28,23 @@ export const projectAbi = [
 				"internalType": "uint256",
 				"name": "_goal",
 				"type": "uint256"
+			},
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "cost",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct PackageInterface.Package[]",
+				"name": "_packages",
+				"type": "tuple[]"
 			}
 		],
 		"stateMutability": "nonpayable",
@@ -45,6 +62,27 @@ export const projectAbi = [
 		],
 		"name": "ClientRequest",
 		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "fund",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "refund",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "takeFund",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
 	},
 	{
 		"anonymous": false,
@@ -125,13 +163,6 @@ export const projectAbi = [
 	},
 	{
 		"inputs": [],
-		"name": "fund",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
 		"name": "get",
 		"outputs": [
 			{
@@ -168,6 +199,23 @@ export const projectAbi = [
 				"internalType": "uint256",
 				"name": "_goal",
 				"type": "uint256"
+			},
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "cost",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct PackageInterface.Package[]",
+				"name": "_packages",
+				"type": "tuple[]"
 			}
 		],
 		"stateMutability": "view",
@@ -184,9 +232,14 @@ export const projectAbi = [
 		"name": "getHistory",
 		"outputs": [
 			{
-				"internalType": "uint256",
-				"name": "payed",
-				"type": "uint256"
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
 			}
 		],
 		"stateMutability": "view",
@@ -208,27 +261,25 @@ export const projectAbi = [
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "histories",
-		"outputs": [
-			{
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
 			}
 		],
+		"name": "packages",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "cost",
+				"type": "uint256"
+			}
+		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "refund",
-		"outputs": [],
-		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -246,13 +297,6 @@ export const projectAbi = [
 	},
 	{
 		"inputs": [],
-		"name": "takeFund",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
 		"name": "title",
 		"outputs": [
 			{
@@ -266,20 +310,48 @@ export const projectAbi = [
 	}
 ]
 
+export async function getMyHistories() {
+	let output = []
+	for (let address of (await campaignContract.methods.getProjects().call())) {
+		let projectContract = new web3.eth.Contract(projectAbi, address)
+		let histories = await projectContract.methods.getHistory((await web3.eth.getAccounts())[0]).call()
+		console.log(histories)
+		let name = await projectContract.methods.title().call()
+		let creator = await projectContract.methods.creator().call()
+		output = [...output, ...histories[0].map((e, i) => [name, creator, e, histories[1][i]])]
+	}
+	return output
+}
+
 export async function getProjects() {
-    let output = [];
+    let output = []
     for (let address of (await campaignContract.methods.getProjects().call())) {
 		let projectContract = new web3.eth.Contract(projectAbi, address)
 		let project = await projectContract.methods.get().call()
 		project.contract = projectContract
-		project.history = await projectContract.methods.getHistory((await web3.eth.getAccounts())[0]).call()
         output.push(project)
     }
     return output
 }
 
-export async function createProject(title, description, deadline, goal) {    
-    return await campaignContract.methods.createProject(title, description, deadline, web3.utils.toWei(goal, 'ether')).send({
+export async function getMyProjects() {
+	let output = []
+	let account = (await web3.eth.getAccounts())[0]
+    for (let address of (await campaignContract.methods.getProjects().call())) {
+		let projectContract = new web3.eth.Contract(projectAbi, address)
+		let project = await projectContract.methods.get().call()
+		if (project._creator === account) {
+			project.contract = projectContract
+			project.history = await projectContract.methods.getHistory((await web3.eth.getAccounts())[0]).call()
+			output.push(project)
+		}
+    }
+    return output
+}
+
+export async function createProject(title, description, deadline, goal, packages) {
+	packages = packages.map(v => { v[1] = web3.utils.toWei(v[1], 'ether'); return v })
+    return await campaignContract.methods.createProject(title, description, deadline, web3.utils.toWei(goal, 'ether'), packages).encodeABI().send({
       from: (await web3.eth.getAccounts())[0],
 	})
 }
@@ -288,7 +360,7 @@ export async function fundProject(address, amount) {
 	let projectContract = new web3.eth.Contract(projectAbi, address)
     return await projectContract.methods.fund().send({
 	  from: (await web3.eth.getAccounts())[0],
-	  value: web3.utils.toWei(amount, 'ether')
+	  value: amount
 	})
 }
 

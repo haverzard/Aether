@@ -60,6 +60,41 @@
     margin-right: 20px;
 }
 
+.Project-package-title {
+    width: 100%;
+    text-align: center;
+    border-top: 2px solid #555;
+    border-bottom: 2px solid #555;
+}
+
+.Project-package-wrapper {
+    width: 100%;
+    display: flex;
+    border-bottom: 2px solid #555;
+}
+
+.Project-package-name, .Project-package-cost {
+    width: 50%;
+    text-align: center;
+    border: 0;
+}
+
+.Project-package-wrapper:nth-child(odd) .Project-package-name, .Project-package-wrapper:nth-child(odd) .Project-package-cost:hover {
+    background-color: #4287f5;
+}
+
+.Project-package-wrapper:nth-child(odd) .Project-package-cost {
+    background-color: #9ec3ff;
+}
+
+.Project-package-wrapper:nth-child(even) .Project-package-name, .Project-package-wrapper:nth-child(even) .Project-package-cost:hover {
+    background-color: #4dd151;
+}
+
+.Project-package-wrapper:nth-child(even) .Project-package-cost {
+    background-color: #9effa1;
+}
+
 .Project-desc {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     color: #777;

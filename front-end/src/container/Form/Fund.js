@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from 'react'
-import { getProjects, fundProject, refundProject } from '../../web3/project.js'
+import { getProjects, getMyProjects, fundProject, refundProject } from '../../web3/project.js'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import ProgressBar from 'react-bootstrap/ProgressBar'
 import "./Fund.css"
@@ -9,16 +9,24 @@ export default class Home extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            amount: "",
             projects: [],
             loading: true
         }
     }
     componentDidMount() {
         setTimeout(window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 100)
-        getProjects().then((projects) => {
-            this.setState({ projects: projects, loading: false })
-        })
+        this.load = () => {
+            if (this.props.type === "mine") {
+                getMyProjects().then((projects) => {
+                    this.setState({ projects: projects, loading: false })
+                })
+            } else {
+                getProjects().then((projects) => {
+                    this.setState({ projects: projects, loading: false })
+                })
+            }
+        }
+        this.load()
     }
     render() {
     return (
@@ -43,25 +51,37 @@ export default class Home extends React.Component {
                         {project._state == 1 && <div className="Project-identifier" style={{backgroundColor: '#d15d0f'}}>Expired</div>}
                         {project._state == 2 && <div className="Project-identifier" style={{backgroundColor: '#0fd126'}}>Done</div>}
                         <div className="Project-title">{project._title}</div>
-                        <div className="Project-goal">[GOAL — ETH {project._goal/(10**18)}]</div>
-                        <div className="Project-goal">[You have fund {project.history/(10**18)} ETH]</div>
+                        <div className="Project-goal">[GOAL — {project._goal/(10**18)} ETH]</div>
                     </div>
                     <div className="Project-desc">{project._description}</div>
-                    <div className="Project-deadline">Project will be ongoing until {(new Date(project._deadline * 1000)).toUTCString()}</div>
+                    <div className="Project-deadline">Project will be ongoing until {(new Date(project._deadline * 1000)).toString()}</div>
                     <ProgressBar striped animated
                         variant={project._state == 0 ? "info" : (project._state == 2 ? "success" : "danger")}
                         label={percentage+"%"}
                         now={percentage}
                         style={{marginBottom: "20px" }} />
                     {project._state == 0 &&
-                        <form className="" 
-                            onSubmit={async (e)=>{
-                                e.preventDefault()
-                                await fundProject(project.contract._address, this.state.amount)
-                                alert("We received your transaction, please refresh your browser")}}>
-                            <input type="number" placeholder="Funding (in ETH)" value={this.state.amount} onChange={(e) => this.setState({amount: e.target.value})} />
-                            <button>Fund</button>
-                       </form>
+                        <div>
+                            <div className="Project-package-title">
+                                Payment Packages List
+                            </div>
+                            {project._packages.map((v,i) => {
+                                return (
+                                    <div className="Project-package-wrapper" key={i}>
+                                        <div className="Project-package-name">
+                                            {v.name}
+                                        </div>
+                                        <button className="Project-package-cost" 
+                                            onClick={async () => {
+                                                await fundProject(project.contract._address, parseInt(v.cost))
+                                                this.load()
+                                            }}>
+                                            PAY {v.cost/(10**18)} ETH
+                                        </button>
+                                    </div>
+                                )
+                            })}
+                       </div>
                         }
                     {project._state == 1 &&
                         <form className=""

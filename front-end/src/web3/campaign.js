@@ -1,6 +1,6 @@
 import web3 from './web3.js'
 
-const address = "0x40380B660Ea7DEa9911ed7599deF4eA5803d841b" // Change this if you want to use your own contracts
+const address = "0xadEd4339d713c6C8db5B3aed456eE61c32BcE90d" // Change this if you want to use your own contracts
 const campaignAbi = [
 	{
 		"anonymous": false,
@@ -42,6 +42,23 @@ const campaignAbi = [
 				"internalType": "uint256",
 				"name": "goal",
 				"type": "uint256"
+			},
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "cost",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct PackageInterface.Package[]",
+				"name": "packages",
+				"type": "tuple[]"
 			}
 		],
 		"name": "createProject",

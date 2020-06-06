@@ -4,6 +4,7 @@ import {CSSTransition} from 'react-transition-group'
 import UserChoices from '../Choices/UserChoices.js'
 import ProjectForm from '../Form/ProjectForm.js'
 import Fund from '../Form/Fund.js'
+import History from '../History/History.js'
 import logo from './money.svg'
 import './App.css'
 
@@ -86,6 +87,30 @@ export default class Home extends React.Component {
             >
             <div ref={this.dummyRef[3]}>
                 <Fund />
+            </div>
+        </CSSTransition>
+        <CSSTransition
+            nodeRef={this.dummyRef[3]}
+            in={this.state.choice == "Mine"}
+            timeout={350}
+            classNames="display"
+            unmountOnExit
+            appear
+            >
+            <div ref={this.dummyRef[3]}>
+                <Fund type="mine" />
+            </div>
+        </CSSTransition>
+        <CSSTransition
+            nodeRef={this.dummyRef[3]}
+            in={this.state.choice == "History"}
+            timeout={350}
+            classNames="display"
+            unmountOnExit
+            appear
+            >
+            <div ref={this.dummyRef[3]}>
+                <History />
             </div>
         </CSSTransition>
         </div>
