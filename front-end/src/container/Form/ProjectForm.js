@@ -60,7 +60,7 @@ export default class Home extends React.Component {
                     <button className="Form-cross" onClick={() => this.handleCross(i)}><span role="img" aria-label="cross">❌</span></button>
                     <input className="Form-input-left" type="text" placeholder="Package's name" value={p[0]} required
                         onChange={(e) => this.handleName(e,i)} />
-                    <input className="Form-input-right" type="number" placeholder="Package's cost" value={p[1]} required
+                    <input className="Form-input-right" type="number" placeholder="Package's cost (ETH)" value={p[1]} required
                         onChange={(e) => this.handleCost(e,i)} />
                     </div>
                 )

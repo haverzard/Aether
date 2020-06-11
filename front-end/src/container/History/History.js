@@ -26,43 +26,43 @@ export default class Home extends React.Component {
                     Loading data...
                 </div>}
             {!this.state.loading &&
-            <div className="Payment-wrapper">
-                <div className="Payment-title">
+            <table className="Payment-wrapper">
+                <tbody className="Payment-title">
                     Your Payment Histories
-                </div>
-                <div className="Payment-data-wrapper">
-                    <div className="Payment-date">
+                </tbody>
+                <tbody className="Payment-data-wrapper">
+                    <th className="Payment-date">
                         Date
-                    </div>
-                    <div className="Payment-project">
+                    </th>
+                    <th className="Payment-project">
                         Project
-                    </div>
-                    <div className="Payment-creator">
+                    </th>
+                    <th className="Payment-creator">
                         Creator
-                    </div>
-                    <div className="Payment-cost">
+                    </th>
+                    <th className="Payment-cost">
                         Amount
-                    </div>
-                </div>
+                    </th>
+                </tbody>
                 {this.state.history.map((v,i) => {
                     return (
-                        <div className="Payment-data-wrapper" key={i+1}>
-                            <div className="Payment-date">
+                        <tbody className="Payment-data-wrapper" key={i+1}>
+                            <td className="Payment-date">
                                 {(new Date(v[2] * 1000)).toString()}
-                            </div>
-                            <div className="Payment-project">
+                            </td>
+                            <td className="Payment-project">
                                 {v[0]}
-                            </div>
-                            <div className="Payment-creator">
+                            </td>
+                            <td className="Payment-creator">
                                 {v[1]}
-                            </div>
-                            <div className="Payment-cost">
+                            </td>
+                            <td className="Payment-cost">
                                 {v[3]/(10**18)} ETH
-                            </div>
-                        </div>
+                            </td>
+                        </tbody>
                     )
                 })}
-            </div>
+            </table>
             }
         </div>
     )}

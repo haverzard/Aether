@@ -351,7 +351,7 @@ export async function getMyProjects() {
 
 export async function createProject(title, description, deadline, goal, packages) {
 	packages = packages.map(v => { v[1] = web3.utils.toWei(v[1], 'ether'); return v })
-    return await campaignContract.methods.createProject(title, description, deadline, web3.utils.toWei(goal, 'ether'), packages).encodeABI().send({
+    return await campaignContract.methods.createProject(title, description, deadline, web3.utils.toWei(goal, 'ether'), packages).send({
       from: (await web3.eth.getAccounts())[0],
 	})
 }
