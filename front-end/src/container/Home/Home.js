@@ -41,7 +41,7 @@ export default class Home extends React.Component {
                 </div>
             </CSSTransition>
             <p className="App-title">
-                CrowdFunding Platform
+                Aether
             </p>
             <p className="App-link">
                 Create your own crowd funding projects here!
