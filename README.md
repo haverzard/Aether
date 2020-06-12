@@ -1,9 +1,9 @@
-# Crowdfunding Platform
+# Aether
 ![Node.js CI](https://github.com/haverzard/CrowdFunding_Ethereum/workflows/Node.js%20CI/badge.svg)
 
 ![View](view.gif)
 
-Funding for a project is a common problem, so why don't we just create our own?
+A crowdfunding platform using Web 3.0 and React front-end.
 
 ## Prerequisites
 - MetaMask: https://metamask.io/
