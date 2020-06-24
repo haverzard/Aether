@@ -88,7 +88,8 @@ export default class Home extends React.Component {
                             onSubmit={async (e)=>{
                                 e.preventDefault()
                                 await refundProject(project.contract._address)
-                                alert("We received your transaction, please refresh your browser")}}>
+                                this.load()
+                            }}>
                             <button>Refund</button>
                        </form>
                         }

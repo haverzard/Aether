@@ -68,7 +68,9 @@ contract Project is PackageInterface {
             state = State.Expired;
         } else if (currentBalance >= goal) {
             state = State.Fulfilled;
-            takeFund();
+            creator.transfer(currentBalance);
+            emit Transaction(creator, "Taking the funds", currentBalance);
+            currentBalance = 0;
         }
     }
 
